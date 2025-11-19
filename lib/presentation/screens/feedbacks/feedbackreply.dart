@@ -33,14 +33,14 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
   void _handleSendReply() {
     if (_replyController.text.trim().isNotEmpty) {
       // Handle sending reply
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Reply sent successfully!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Reply sent successfully!')));
       Navigator.pop(context);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a reply')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter a reply')));
     }
   }
 
@@ -98,30 +98,24 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                       const SizedBox(height: 4),
                       Text(
                         'sophiabennett@gmail.com',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                       ),
                     ],
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              
+
               // Star Rating
               Row(
                 children: List.generate(
                   5,
-                  (index) => const Icon(
-                    Icons.star,
-                    color: Colors.black87,
-                    size: 28,
-                  ),
+                  (index) =>
+                      const Icon(Icons.star, color: Colors.black87, size: 28),
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Customer Feedback Comment
               Text(
                 'The service was excellent, and the staff was very friendly. I especially loved the ambiance of the salon. Will definitely come back!',
@@ -132,7 +126,7 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Like and Dislike Buttons
               Row(
                 children: [
@@ -147,7 +141,10 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                           Icon(
                             _isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
                             size: 20,
-                            color: _isLiked ? const Color(0xFF0D5EAC) : Colors.grey[700],
+                            color:
+                                _isLiked
+                                    ? const Color(0xFF0D5EAC)
+                                    : Colors.grey[700],
                           ),
                           const SizedBox(width: 6),
                           Text(
@@ -163,7 +160,7 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                     ),
                   ),
                   const SizedBox(width: 20),
-                  
+
                   // Dislike Button
                   InkWell(
                     onTap: () {
@@ -182,7 +179,7 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                 ],
               ),
               const SizedBox(height: 24),
-              
+
               // Reply Text Field
               Container(
                 decoration: BoxDecoration(
@@ -195,21 +192,15 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                   maxLines: 6,
                   decoration: InputDecoration(
                     hintText: 'Write your reply...',
-                    hintStyle: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 14,
-                    ),
+                    hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.all(16),
                   ),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.black87),
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Send Reply Button
               Align(
                 alignment: Alignment.centerRight,
@@ -229,10 +220,7 @@ class _FeedbackReplyScreenState extends State<FeedbackReplyScreen> {
                   ),
                   child: const Text(
                     'Send Reply',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
