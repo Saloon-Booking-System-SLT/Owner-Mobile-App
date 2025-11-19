@@ -24,6 +24,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   image_picker: ^1.1.2
   google_fonts: ^6.1.0 
+  table_calendar: ^3.0.9
 
 dev_dependencies:
   flutter_test:
