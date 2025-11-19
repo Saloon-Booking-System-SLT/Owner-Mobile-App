@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'imageupload.dart';
+
 
 
 class SetupAccountScreen extends StatefulWidget {
@@ -40,8 +42,11 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
 
   void _handleNext() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Proceeding to next step')),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UploadSalonImageScreen(),
+        ),
       );
     }
   }

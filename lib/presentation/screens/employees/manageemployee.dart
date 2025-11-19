@@ -57,9 +57,12 @@ class ManageEmployeesScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+        leading: Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back, color: Colors.black, size: 24),
+          ),
         ),
         title: const Text(
           'Manage Employees',

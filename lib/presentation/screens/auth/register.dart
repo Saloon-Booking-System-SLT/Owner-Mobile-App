@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'account.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -26,9 +28,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _handleNext() {
     if (_formKey.currentState!.validate()) {
-      // Handle registration logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Proceeding to next step')),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SetupAccountScreen(),
+        ),
       );
     }
   }

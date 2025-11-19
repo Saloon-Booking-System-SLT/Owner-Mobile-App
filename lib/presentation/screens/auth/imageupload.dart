@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-
+import 'package:salon_slt/presentation/screens/auth/successscreen.dart';
 
 class UploadSalonImageScreen extends StatefulWidget {
   const UploadSalonImageScreen({super.key});
@@ -36,8 +36,11 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
   }
 
   void _handleFinishSetup() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Setup completed successfully!')),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AccountSuccessScreen(),
+      ),
     );
   }
 

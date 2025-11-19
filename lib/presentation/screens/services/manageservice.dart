@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class Service {
   final String name;
   final String description;
@@ -53,9 +51,12 @@ class ManageServicesScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+        leading: Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back, color: Colors.black, size: 24),
+          ),
         ),
         title: const Text(
           'Manage Services',
@@ -85,11 +86,12 @@ class ManageServicesScreen extends StatelessWidget {
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: services.length,
-              separatorBuilder: (context, index) => Divider(
-                height: 1,
-                thickness: 1,
-                color: Colors.grey.shade300,
-              ),
+              separatorBuilder:
+                  (context, index) => Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Colors.grey.shade300,
+                  ),
               itemBuilder: (context, index) {
                 return ServiceCard(
                   service: services[index],
@@ -101,6 +103,7 @@ class ManageServicesScreen extends StatelessWidget {
           ),
         ],
       ),
+
     );
   }
 }
@@ -124,11 +127,7 @@ class ServiceCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.content_cut,
-            color: Colors.pink.shade300,
-            size: 28,
-          ),
+          Icon(Icons.content_cut, color: Colors.pink.shade300, size: 28),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -145,23 +144,14 @@ class ServiceCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   service.description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    ActionButton(
-                      label: 'Edit',
-                      onPressed: onEdit,
-                    ),
+                    ActionButton(label: 'Edit', onPressed: onEdit),
                     const SizedBox(width: 12),
-                    ActionButton(
-                      label: 'Delete',
-                      onPressed: onDelete,
-                    ),
+                    ActionButton(label: 'Delete', onPressed: onDelete),
                   ],
                 ),
               ],
@@ -182,10 +172,7 @@ class ServiceCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 'Duration: ${service.duration} min',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey.shade700,
-                ),
+                style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
               ),
             ],
           ),
@@ -199,11 +186,8 @@ class ActionButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
 
-  const ActionButton({
-    Key? key,
-    required this.label,
-    required this.onPressed,
-  }) : super(key: key);
+  const ActionButton({Key? key, required this.label, required this.onPressed})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {

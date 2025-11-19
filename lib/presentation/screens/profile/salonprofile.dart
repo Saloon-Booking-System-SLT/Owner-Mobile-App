@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class SalonProfileScreen extends StatefulWidget {
   const SalonProfileScreen({super.key});
 

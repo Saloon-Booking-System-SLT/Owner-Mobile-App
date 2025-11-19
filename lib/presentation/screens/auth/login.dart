@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/presentation/screens/auth/register.dart';
+import 'package:salon_slt/presentation/screens/home/dashboardscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,18 +22,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      // Handle login logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login button pressed')),
-      );
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DashboardScreen(),
+      ),
+    );
   }
 
   void _handleRegister() {
-    // Handle register navigation
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Navigate to register page')),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const RegisterScreen(),
+      ),
     );
   }
 

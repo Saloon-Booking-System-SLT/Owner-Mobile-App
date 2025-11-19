@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/presentation/screens/feedbacks/feedbackreply.dart';
 
 class FeedbackDetailScreen extends StatelessWidget {
   const FeedbackDetailScreen({super.key});
@@ -67,7 +68,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              
+
               // Date and Appointment ID
               const Text(
                 'Date: 2024-07-26',
@@ -86,7 +87,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // Rating Section
               const Text(
                 'Rating',
@@ -97,7 +98,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Rating Display
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +131,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 32),
-                  
+
                   // Rating Bars
                   Expanded(
                     child: Column(
@@ -146,7 +147,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              
+
               // Salon and Staff Rating
               Row(
                 children: [
@@ -190,7 +191,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              
+
               // Customer Comment Section
               const Text(
                 'Customer Comment',
@@ -210,13 +211,18 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Reply Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle reply to feedback
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FeedbackReplyScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0D5EAC),
@@ -237,7 +243,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // Service Details Section
               const Text(
                 'Service Details',
@@ -248,7 +254,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Service
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,7 +276,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              
+
               // Staff
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,7 +298,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              
+
               // Date
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,7 +320,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              
+
               // Time
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../widgets/home/bottom_nav_bar.dart';
+
 // Add this to your pubspec.yaml:
 // dependencies:
 //   table_calendar: ^3.0.9
@@ -57,6 +59,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 
@@ -210,6 +213,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         }).toList(),
       ),
     );
+
   }
 
   Widget _buildAppointmentsList() {
