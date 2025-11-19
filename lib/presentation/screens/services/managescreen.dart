@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/presentation/screens/employees/addemployee.dart';
+import 'package:salon_slt/presentation/screens/employees/manageemployee.dart';
+import '../../widgets/home/bottom_nav_bar.dart';
+import 'addservice.dart';
+import 'manageservice.dart';
+
 
 class ManageScreen extends StatelessWidget {
   const ManageScreen({super.key});
@@ -8,6 +14,7 @@ class ManageScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
@@ -32,6 +39,22 @@ class ManageScreen extends StatelessWidget {
               'Services',
               'Manage salon services that are\nproviding to customers',
               showAddButton: true,
+              onAddPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddServicesScreen(),
+                  ),
+                );
+              },
+              onManagePressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ManageServicesScreen(),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 20),
             _buildManageCard(
@@ -39,19 +62,38 @@ class ManageScreen extends StatelessWidget {
               'Salon Staff',
               'Add or manage salon staff',
               showAddButton: false,
+              onAddPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddEmployeesScreen(),
+                  ),
+                );
+              },
+              onManagePressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ManageEmployeesScreen(),
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
     );
   }
 
   Widget _buildManageCard(
-    BuildContext context,
-    String title,
-    String description, {
-    required bool showAddButton,
-  }) {
+      BuildContext context,
+      String title,
+      String description, {
+        required bool showAddButton,
+        required VoidCallback onAddPressed,
+        required VoidCallback onManagePressed,
+      }) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -84,13 +126,13 @@ class ManageScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: onAddPressed,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: showAddButton
                         ? const Color(0xFF0D5EAC)
                         : Colors.grey[200],
                     foregroundColor:
-                        showAddButton ? Colors.white : Colors.black87,
+                    showAddButton ? Colors.white : Colors.black87,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -106,7 +148,7 @@ class ManageScreen extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: onManagePressed,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.black87,
                     side: BorderSide(color: Colors.grey[300]!),
