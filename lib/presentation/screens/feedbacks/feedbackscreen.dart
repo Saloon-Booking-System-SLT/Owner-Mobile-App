@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/presentation/screens/feedbacks/feedbackdetails.dart';
+
+import 'feedbackreply.dart';
 
 
 
@@ -59,9 +62,12 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+        leading: Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back, color: Colors.black, size: 24),
+          ),
         ),
         title: const Text(
           'Feedbacks',
@@ -327,7 +333,14 @@ class ReviewCard extends StatelessWidget {
           Row(
             children: [
               ElevatedButton(
-                onPressed: onViewDetails,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FeedbackDetailScreen(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0066CC),
                   foregroundColor: Colors.white,
@@ -350,7 +363,14 @@ class ReviewCard extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               OutlinedButton(
-                onPressed: onReply,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FeedbackReplyScreen(),
+                    ),
+                  );
+                },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.grey.shade800,
                   side: BorderSide(color: Colors.grey.shade300),
