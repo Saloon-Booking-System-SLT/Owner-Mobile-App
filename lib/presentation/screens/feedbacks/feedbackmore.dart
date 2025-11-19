@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/home/bottom_nav_bar.dart';
+import 'feedbackscreen.dart';
+
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
@@ -8,6 +11,7 @@ class MoreScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
@@ -26,7 +30,14 @@ class MoreScreen extends StatelessWidget {
           _buildMenuItem(
             icon: Icons.feedback_outlined,
             title: 'Feedbacks',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FeedbacksScreen(),
+                ),
+              );
+            },
           ),
           _buildMenuItem(
             icon: Icons.campaign_outlined,
@@ -35,6 +46,7 @@ class MoreScreen extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 3),
     );
   }
 
