@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/presentation/screens/auth/login.dart';
 
-
-
-class AccountSuccessScreen extends StatelessWidget {
+class AccountSuccessScreen extends StatefulWidget {
   const AccountSuccessScreen({super.key});
 
+  @override
+  State<AccountSuccessScreen> createState() => _AccountSuccessScreenState();
+}
+
+class _AccountSuccessScreenState extends State<AccountSuccessScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Navigate to login after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ),
+              (route) => false,
+        );
+      }
+    });
+  }
+
   void _handleClose(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+          (route) => false,
+    );
   }
 
   @override
@@ -37,7 +64,7 @@ class AccountSuccessScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Success Message
                   const Text(
                     'Your Salon Account has been successfully created',
@@ -53,7 +80,7 @@ class AccountSuccessScreen extends StatelessWidget {
               ),
             ),
           ),
-          
+
           // Close button
           Positioned(
             top: 40,
