@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/presentation/screens/profile/salonprofile.dart';
+
+import '../../widgets/home/bottom_nav_bar.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -21,6 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
@@ -35,7 +39,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.person, color: Colors.black87),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SalonProfileScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -120,6 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 0),
     );
   }
 
