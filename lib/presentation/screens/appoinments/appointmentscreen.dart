@@ -44,6 +44,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
+        automaticallyImplyLeading: false,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
