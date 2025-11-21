@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/core/responsive/extensions.dart';
+import 'package:salon_slt/core/theme/colors.dart';
 import 'package:salon_slt/presentation/screens/auth/register.dart';
 import 'package:salon_slt/presentation/screens/home/dashboardscreen.dart';
+import '../../../core/responsive/app_size.dart';
+import '../../../core/responsive/size_config.dart';
+import '../../../core/responsive/spacing.dart';
+import '../../widgets/common/common_button.dart';
+import '../../widgets/common/common_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,107 +29,67 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleLogin() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const DashboardScreen(),
-      ),
-    );
+    if (_formKey.currentState!.validate()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+      );
+    }
   }
 
   void _handleRegister() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const RegisterScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const RegisterScreen()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    // Initialize size config
+    SizeConfig.init(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              padding: EdgeInsets.symmetric(horizontal: Spacing.xl.w),
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Title
-                    const Text(
+                    Text(
                       'Login to your salon',
                       style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
-                    
-                    // Subtitle
-                    const Text(
+                    SizedBox(height: Spacing.sm.h),
+
+                    Text(
                       'Manage appointments\nand services',
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
+                        fontSize: 16.sp,
+                        color: AppColors.textPrimary,
                         height: 1.5,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 40),
-                    
-                    // Email TextField
-                    TextFormField(
+                    SizedBox(height: 40.h),
+
+                    CustomTextField(
                       controller: _emailController,
+                      hintText: 'Enter Your Email',
+                      hintTextColor: AppColors.textPlaceholder,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Enter Your Email',
-                        hintStyle: TextStyle(
-                          color: Colors.grey[400],
-                          fontSize: 15,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 18,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF2196F3),
-                            width: 2,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF2196F3),
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2,
-                          ),
-                        ),
-                      ),
+                      borderColor: AppColors.placeholderBorder,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';
@@ -133,53 +100,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 16),
-                    
-                    // Password TextField
-                    TextFormField(
+                    SizedBox(height: Spacing.md.h),
+
+                    CustomTextField(
                       controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Enter Your Password',
-                        hintStyle: TextStyle(
-                          color: Colors.grey[400],
-                          fontSize: 15,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 18,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            color: Colors.grey[300]!,
-                            width: 1.5,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF2196F3),
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2,
-                          ),
-                        ),
-                      ),
+                      hintText: 'Enter Your Password',
+                      hintTextColor: AppColors.textPlaceholder,
+                      keyboardType: TextInputType.visiblePassword,
+                      borderColor: AppColors.placeholderBorder,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
@@ -190,50 +118,43 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 24),
-                    
-                    // Login Button
-                    ElevatedButton(
+                    SizedBox(height: Spacing.lg.h),
+
+                    CustomButton(
                       onPressed: _handleLogin,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0D5EAC),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: const Text(
+                      backgroundColor: AppColors.buttonPrimary,
+                      width: double.infinity,
+                      height: AppSizes.inputHeight,
+                      child: Text(
                         'Login',
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w700,
                           letterSpacing: 0.5,
+                          color: AppColors.white,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    
-                    // Register Link
+                    SizedBox(height: 20.h),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'Not registered yet?  ',
                           style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 14,
+                            color: AppColors.gray50,
+                            fontSize: 12.sp,
                           ),
                         ),
                         GestureDetector(
                           onTap: _handleRegister,
-                          child: const Text(
+                          child: Text(
                             'Register here',
                             style: TextStyle(
-                              color: Color(0xFF2196F3),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              color: AppColors.textBlue,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
