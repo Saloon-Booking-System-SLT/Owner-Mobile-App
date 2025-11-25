@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_slt/presentation/screens/profile/salonprofile.dart';
 
+import '../../../core/theme/colors.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -22,23 +23,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         elevation: 0,
         title: const Text(
           'Dashboard',
           style: TextStyle(
-            color: Colors.black87,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
           ),
         ),
-        centerTitle: true,
+        // centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.person, color: Colors.black87),
+            icon: const Icon(Icons.person, color: AppColors.black),
             onPressed: () {
               Navigator.push(
                 context,
@@ -89,9 +90,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Text(
                 'All Appointments',
                 style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.black,
                 ),
               ),
             ),
@@ -148,8 +149,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Text(
             title,
             style: TextStyle(
-              fontSize: 13,
-              color: Colors.grey[800],
+              fontSize: 16,
+              color: AppColors.textPrimary,
               height: 1.3,
             ),
           ),
@@ -157,9 +158,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Text(
             value,
             style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: AppColors.black,
             ),
           ),
         ],
@@ -182,51 +183,82 @@ class _DashboardScreenState extends State<DashboardScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0x80F5F5F5),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.calendar_today, size: 20, color: Colors.grey[600]),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Icon(
+                  Icons.calendar_today,
+                  size: 20,
+                  color: AppColors.black,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      child: Text(
-                        '$date • $name',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '$date • $name',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textPrimary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        overflow: TextOverflow.ellipsis,
+                        Text(
+                          time,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Customer ID: $customerId',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.dashboardText,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(height: 2),
                     Text(
-                      time,
-                      style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+                      service,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.dashboardText,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Text('Customer ID: $customerId',
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-                Text(service,
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          // Status Dropdown Button with fixed width
-          SizedBox(
-            width: 110,
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerRight,
             child: PopupMenuButton<String>(
               offset: const Offset(0, 35),
               onSelected: (String newStatus) {
@@ -240,36 +272,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 );
               },
-              itemBuilder: (BuildContext context) => [
-                _buildPopupMenuItem('Pending', Colors.red[700]!),
-                _buildPopupMenuItem('Completed', const Color(0xFF0D5EAC)),
-                _buildPopupMenuItem('In Progress', Colors.green[700]!),
-                _buildPopupMenuItem('Cancel', Colors.red[700]!),
-              ],
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        status,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: statusColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      size: 18,
-                      color: statusColor,
-                    ),
+              itemBuilder:
+                  (BuildContext context) => [
+                    _buildPopupMenuItem('Pending', AppColors.statusYellow),
+                    _buildPopupMenuItem('Completed', AppColors.statusBlue),
+                    _buildPopupMenuItem('In Progress', AppColors.statusGreen),
+                    _buildPopupMenuItem('Cancel', AppColors.statusRed),
                   ],
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    status,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: statusColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(Icons.arrow_drop_down, size: 18, color: statusColor),
+                ],
               ),
             ),
           ),
@@ -295,15 +318,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Color _getStatusColor(String status) {
     switch (status) {
       case 'Pending':
-        return Colors.red[700]!;
+        return AppColors.statusYellow;
       case 'Completed':
-        return const Color(0xFF0D5EAC);
+        return AppColors.statusBlue;
       case 'In Progress':
-        return Colors.green[700]!;
+        return AppColors.statusGreen;
       case 'Cancel':
-        return Colors.red[700]!;
+        return AppColors.statusRed;
       default:
-        return Colors.grey[700]!;
+        return AppColors.statusNone;
     }
   }
 }
