@@ -3,10 +3,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../widgets/home/bottom_nav_bar.dart';
 
-// Add this to your pubspec.yaml:
-// dependencies:
-//   table_calendar: ^3.0.9
-
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
 
@@ -16,18 +12,89 @@ class AppointmentsScreen extends StatefulWidget {
 
 class _AppointmentsScreenState extends State<AppointmentsScreen> {
   String _selectedFilter = 'All';
-  DateTime _focusedDay = DateTime(2025, 4, 7);
-  DateTime? _selectedDay = DateTime(2025, 4, 7);
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay = DateTime.now();
   
-  // Store appointment statuses
-  final Map<int, String> _appointmentStatuses = {
-    0: 'Completed',
-    1: 'Pending',
-    2: 'In Progress',
-    3: 'Cancel',
-    4: 'In Progress',
-    5: 'Pending',
-  };
+  // Sample appointments data with dates
+  // In a real app, this would come from your database
+  final List<Map<String, dynamic>> _allAppointments = [
+    {
+      'id': 0,
+      'name': 'Ava Bennett',
+      'time': '9:05 am - 9:35 am',
+      'service': 'Haircut',
+      'status': 'Completed',
+      'date': DateTime(2025, 4, 7),
+    },
+    {
+      'id': 1,
+      'name': 'Noah Carter',
+      'time': '10:30 am - 11:45 am',
+      'service': 'Manicure',
+      'status': 'Pending',
+      'date': DateTime(2025, 4, 7),
+    },
+    {
+      'id': 2,
+      'name': 'Isabella Hayes',
+      'time': '2 pm - 3 pm',
+      'service': 'Facial',
+      'status': 'In Progress',
+      'date': DateTime(2025, 4, 8),
+    },
+    {
+      'id': 3,
+      'name': 'Emma Wilson',
+      'time': '11 am - 12 pm',
+      'service': 'Pedicure',
+      'status': 'Cancel',
+      'date': DateTime(2025, 4, 7),
+    },
+    {
+      'id': 4,
+      'name': 'Lucas Foster',
+      'time': '3 pm - 4 pm',
+      'service': 'Massage',
+      'status': 'In Progress',
+      'date': DateTime(2025, 4, 9),
+    },
+    {
+      'id': 5,
+      'name': 'Sophia Davis',
+      'time': '1 pm - 2 pm',
+      'service': 'Hair Coloring',
+      'status': 'Pending',
+      'date': DateTime(2025, 4, 7),
+    },
+  ];
+
+  // Filter appointments based on selected date and status
+  List<Map<String, dynamic>> _getFilteredAppointments() {
+    return _allAppointments.where((appointment) {
+      // Filter by date
+      bool matchesDate = _selectedDay == null ||
+          isSameDay(appointment['date'], _selectedDay);
+      
+      // Filter by status
+      bool matchesStatus = _selectedFilter == 'All' ||
+          appointment['status'] == _selectedFilter;
+      
+      return matchesDate && matchesStatus;
+    }).toList();
+  }
+
+  // Update appointment status (this should update your database)
+  void _updateAppointmentStatus(int id, String newStatus) {
+    setState(() {
+      final index = _allAppointments.indexWhere((apt) => apt['id'] == id);
+      if (index != -1) {
+        _allAppointments[index]['status'] = newStatus;
+      }
+    });
+    
+    // TODO: Update status in your database here
+    // Example: await updateAppointmentInDatabase(id, newStatus);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +228,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           ),
         ),
         
+        // When a day is selected
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             _selectedDay = selectedDay;
@@ -168,15 +236,18 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           });
         },
         
+        // When month/year changes (using chevron buttons)
         onPageChanged: (focusedDay) {
-          _focusedDay = focusedDay;
+          setState(() {
+            _focusedDay = focusedDay;
+          });
         },
       ),
     );
   }
 
   Widget _buildFilterTabs() {
-    final filters = ['All', 'Completed', 'Pending', 'In Progress'];
+    final filters = ['All', 'Completed', 'Pending', 'In Progress', 'Cancel'];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -214,24 +285,66 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         }).toList(),
       ),
     );
-
   }
 
   Widget _buildAppointmentsList() {
+    final filteredAppointments = _getFilteredAppointments();
+    
+    if (filteredAppointments.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Center(
+          child: Column(
+            children: [
+              Icon(Icons.calendar_today_outlined, 
+                   size: 64, 
+                   color: Colors.grey[400]),
+              const SizedBox(height: 16),
+              Text(
+                'No appointments found',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _selectedDay != null 
+                    ? 'No appointments on ${_selectedDay!.day}/${_selectedDay!.month}/${_selectedDay!.year}'
+                    : 'Try selecting a different date or filter',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey[500],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    
     return Column(
-      children: [
-        _buildAppointmentCard(0, 'Ava Bennett', '9:05 am - 9:35 am', 'Haircut'),
-        _buildAppointmentCard(1, 'Noah Carter', '10:30 am - 11:45 am', 'Manicure'),
-        _buildAppointmentCard(2, 'Isabella Hayes', '2 pm - 3 pm', 'Facial'),
-        _buildAppointmentCard(3, 'Isabella Hayes', '2 pm - 3 pm', 'Facial'),
-        _buildAppointmentCard(4, 'Lucas Foster', '3 pm - 4 pm', 'Massage'),
-        _buildAppointmentCard(5, 'Lucas Foster', '3 pm - 4 pm', 'Massage'),
-      ],
+      children: filteredAppointments.map((appointment) {
+        return _buildAppointmentCard(
+          appointment['id'],
+          appointment['name'],
+          appointment['time'],
+          appointment['service'],
+          appointment['status'],
+        );
+      }).toList(),
     );
   }
 
-  Widget _buildAppointmentCard(int index, String name, String time, String service) {
-    final status = _appointmentStatuses[index] ?? 'Pending';
+  Widget _buildAppointmentCard(
+    int id,
+    String name,
+    String time,
+    String service,
+    String status,
+  ) {
     final statusColor = _getStatusColor(status);
 
     return Container(
@@ -280,13 +393,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             child: PopupMenuButton<String>(
               offset: const Offset(0, 35),
               onSelected: (String newStatus) {
-                setState(() {
-                  _appointmentStatuses[index] = newStatus;
-                });
+                _updateAppointmentStatus(id, newStatus);
               },
               itemBuilder: (BuildContext context) => [
                 _buildPopupMenuItem('Completed', const Color(0xFF0D5EAC)),
-                _buildPopupMenuItem('Pending', Colors.red[700]!),
+                _buildPopupMenuItem('Pending', Colors.orange[700]!),
                 _buildPopupMenuItem('In Progress', Colors.green[700]!),
                 _buildPopupMenuItem('Cancel', Colors.red[700]!),
               ],
@@ -333,7 +444,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       case 'Completed':
         return const Color(0xFF0D5EAC);
       case 'Pending':
-        return Colors.red[700]!;
+        return Colors.orange[700]!;
       case 'In Progress':
         return Colors.green[700]!;
       case 'Cancel':
