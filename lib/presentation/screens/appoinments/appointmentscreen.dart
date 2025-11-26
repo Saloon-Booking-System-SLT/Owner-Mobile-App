@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import '../../../core/theme/colors.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
-
-// Add this to your pubspec.yaml:
-// dependencies:
-//   table_calendar: ^3.0.9
 
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
@@ -18,7 +14,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   String _selectedFilter = 'All';
   DateTime _focusedDay = DateTime(2025, 4, 7);
   DateTime? _selectedDay = DateTime(2025, 4, 7);
-  
+
   // Store appointment statuses
   final Map<int, String> _appointmentStatuses = {
     0: 'Completed',
@@ -29,19 +25,55 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     5: 'Pending',
   };
 
+  // All appointments data
+  final List<Map<String, String>> _allAppointments = [
+    {'name': 'Ava Bennett', 'time': '9:05 am - 9:35 am', 'service': 'Haircut'},
+    {'name': 'Noah Carter', 'time': '10:30 am - 11:45 am', 'service': 'Manicure'},
+    {'name': 'Isabella Hayes', 'time': '2 pm - 3 pm', 'service': 'Facial'},
+    {'name': 'Isabella Hayes', 'time': '2 pm - 3 pm', 'service': 'Facial'},
+    {'name': 'Lucas Foster', 'time': '3 pm - 4 pm', 'service': 'Massage'},
+    {'name': 'Lucas Foster', 'time': '3 pm - 4 pm', 'service': 'Massage'},
+  ];
+
+  // Add this new map with your existing filter colors map
+  final Map<String, Color> _filterColors = {
+    'All': const Color(0xFF0D5EAC),
+    'Completed': AppColors.statusBlue,
+    'Pending': AppColors.statusYellow,
+    'In Progress': AppColors.statusGreen,
+  };
+
+// Add a new map for unselected text colors
+  final Map<String, Color> _filterUnselectedColors = {
+    'All': Colors.grey[700]!,
+    'Completed': Colors.blue[300]!,
+    'Pending': Colors.orange[300]!,
+    'In Progress': Colors.green[300]!,
+  };
+  List<int> _getFilteredAppointmentIndices() {
+    if (_selectedFilter == 'All') {
+      return List.generate(_allAppointments.length, (index) => index);
+    }
+
+    return _appointmentStatuses.entries
+        .where((entry) => entry.value == _selectedFilter)
+        .map((entry) => entry.key)
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         elevation: 0,
         title: const Text(
           'Appointments',
           style: TextStyle(
-            color: Colors.black87,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
           ),
         ),
         automaticallyImplyLeading: false,
@@ -79,7 +111,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
         calendarFormat: CalendarFormat.month,
         startingDayOfWeek: StartingDayOfWeek.sunday,
-        
+
         // Header style
         headerStyle: HeaderStyle(
           formatButtonVisible: false,
@@ -109,18 +141,18 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             return '${months[date.month - 1]}  ${date.year}';
           },
         ),
-        
+
         // Calendar style
         calendarStyle: CalendarStyle(
           outsideDaysVisible: false,
           weekendTextStyle: const TextStyle(color: Colors.black87),
-          
+
           // Default day style
           defaultTextStyle: const TextStyle(
             color: Colors.black87,
             fontSize: 14,
           ),
-          
+
           // Selected day style
           selectedDecoration: const BoxDecoration(
             color: Color(0xFF0D5EAC),
@@ -131,7 +163,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             fontWeight: FontWeight.w600,
             fontSize: 14,
           ),
-          
+
           // Today's style
           todayDecoration: BoxDecoration(
             color: Colors.grey[300],
@@ -142,11 +174,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             fontWeight: FontWeight.w600,
             fontSize: 14,
           ),
-          
+
           cellMargin: const EdgeInsets.all(4),
           cellPadding: const EdgeInsets.all(0),
         ),
-        
+
         // Days of week style
         daysOfWeekStyle: DaysOfWeekStyle(
           weekdayStyle: TextStyle(
@@ -160,14 +192,14 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             fontSize: 13,
           ),
         ),
-        
+
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             _selectedDay = selectedDay;
             _focusedDay = focusedDay;
           });
         },
-        
+
         onPageChanged: (focusedDay) {
           _focusedDay = focusedDay;
         },
@@ -183,6 +215,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       child: Row(
         children: filters.map((filter) {
           bool isSelected = filter == _selectedFilter;
+          Color filterColor = _filterColors[filter] ?? const Color(0xFF0D5EAC);
+          Color unselectedColor = _filterUnselectedColors[filter] ?? Colors.grey[700]!;
+
           return GestureDetector(
             onTap: () {
               setState(() {
@@ -193,18 +228,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
               margin: const EdgeInsets.only(right: 8),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFFE8F2FF) : Colors.white,
+                color: isSelected ? filterColor.withOpacity(0.1) : AppColors.buttonBackground,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFF0D5EAC)
-                      : Colors.grey[300]!,
-                ),
               ),
               child: Text(
                 filter,
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFF0D5EAC) : Colors.grey[700],
+                  color: isSelected ? filterColor : unselectedColor,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                   fontSize: 13,
                 ),
@@ -214,19 +244,33 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         }).toList(),
       ),
     );
-
   }
-
   Widget _buildAppointmentsList() {
+    final filteredIndices = _getFilteredAppointmentIndices();
+
+    if (filteredIndices.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Text(
+          'No appointments found',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[600],
+          ),
+        ),
+      );
+    }
+
     return Column(
-      children: [
-        _buildAppointmentCard(0, 'Ava Bennett', '9:05 am - 9:35 am', 'Haircut'),
-        _buildAppointmentCard(1, 'Noah Carter', '10:30 am - 11:45 am', 'Manicure'),
-        _buildAppointmentCard(2, 'Isabella Hayes', '2 pm - 3 pm', 'Facial'),
-        _buildAppointmentCard(3, 'Isabella Hayes', '2 pm - 3 pm', 'Facial'),
-        _buildAppointmentCard(4, 'Lucas Foster', '3 pm - 4 pm', 'Massage'),
-        _buildAppointmentCard(5, 'Lucas Foster', '3 pm - 4 pm', 'Massage'),
-      ],
+      children: filteredIndices.map((index) {
+        final appointment = _allAppointments[index];
+        return _buildAppointmentCard(
+          index,
+          appointment['name']!,
+          appointment['time']!,
+          appointment['service']!,
+        );
+      }).toList(),
     );
   }
 
@@ -238,9 +282,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
+        color: AppColors.cardBackground,
+        // borderRadius: BorderRadius.circular(8),
+        // border: Border.all(color: Colors.grey[300]!),
       ),
       child: Row(
         children: [
@@ -257,19 +301,19 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 Text(
                   name,
                   style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   time,
-                  style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 14, color: AppColors.text7),
                 ),
                 Text(
                   service,
-                  style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  style: TextStyle(fontSize:  14, color: AppColors.text7),
                 ),
               ],
             ),
@@ -285,10 +329,10 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 });
               },
               itemBuilder: (BuildContext context) => [
-                _buildPopupMenuItem('Completed', const Color(0xFF0D5EAC)),
-                _buildPopupMenuItem('Pending', Colors.red[700]!),
-                _buildPopupMenuItem('In Progress', Colors.green[700]!),
-                _buildPopupMenuItem('Cancel', Colors.red[700]!),
+                _buildPopupMenuItem('Completed', AppColors.statusBlue),
+                _buildPopupMenuItem('Pending', AppColors.statusYellow),
+                _buildPopupMenuItem('In Progress', AppColors.statusGreen),
+                _buildPopupMenuItem('Cancel', AppColors.statusRed),
               ],
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -331,15 +375,15 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   Color _getStatusColor(String status) {
     switch (status) {
       case 'Completed':
-        return const Color(0xFF0D5EAC);
+        return AppColors.statusBlue;
       case 'Pending':
-        return Colors.red[700]!;
+        return AppColors.statusYellow;
       case 'In Progress':
-        return Colors.green[700]!;
+        return AppColors.statusGreen;
       case 'Cancel':
-        return Colors.red[700]!;
+        return AppColors.statusRed;
       default:
-        return Colors.grey[700]!;
+        return AppColors.statusNone;
     }
   }
 }

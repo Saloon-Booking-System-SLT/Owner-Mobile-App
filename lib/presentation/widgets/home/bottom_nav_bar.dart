@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/colors.dart';
 import '../../screens/appoinments/appointmentscreen.dart';
 import '../../screens/feedbacks/feedbackmore.dart';
 import '../../screens/home/dashboardscreen.dart';
@@ -41,7 +42,7 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -54,9 +55,9 @@ class BottomNavBar extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: (index) => _onItemTapped(context, index),
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: const Color(0xFF0D5EAC),
-        unselectedItemColor: Colors.grey[600],
+        backgroundColor: AppColors.navBackground,
+        selectedItemColor: AppColors.textPrimary,
+        unselectedItemColor: AppColors.text7,
         selectedFontSize: 12,
         unselectedFontSize: 12,
         iconSize: 24,
