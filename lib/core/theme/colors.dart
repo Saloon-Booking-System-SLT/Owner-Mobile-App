@@ -11,7 +11,6 @@ class AppColors {
   static const Color navBackground = Color(0xFFF7FAFC);
   static const Color cardBackground = Color(0x1FE6E6E6);
 
-
   // ---- Buttons ----
   static const Color buttonPrimary = Color(0xFF0056A4);
   static const Color buttonSecondary = Color(0xBF0056A4);
@@ -44,12 +43,12 @@ class AppColors {
   static const Color snackBar = Color(0xFF4CAF50);
   static const Color duration = Color(0xFF4A709C);
   static const Color transparent = Colors.transparent;
-  static const Color dashboardText=Color(0xFF61828A);
-  static const Color statusRed=Color(0xFFD32F2F);
-  static const Color statusBlue=Color(0xFF0D5EAC);
-  static const Color statusGreen=Color(0xFF388E3C);
-  static const Color statusNone=Color(0xFF616161);
-  static const Color statusYellow=Color(0xFFFFC107);
+  static const Color dashboardText = Color(0xFF61828A);
+  static const Color statusRed = Color(0xFFD32F2F);
+  static const Color statusBlue = Color(0xFF0D5EAC);
+  static const Color statusGreen = Color(0xFF388E3C);
+  static const Color statusNone = Color(0xFF616161);
+  static const Color statusYellow = Color(0xFFF57C00);
 
   // ---- Borders & Dividers ----
   static const Color borderPrimary = Color(0x80000000); // 1px
@@ -57,8 +56,8 @@ class AppColors {
   static const Color placeholderBorder = Color(0x804C24BC); // 1px
   static const Color divider = Color(0xFFA2A2A2); // 1px
   static const Color tabDivider = Color(0xFFCFDBE8);
-  static const Color borderImage=Color(0xFFC3C2C2);
-  static const Color borderCard=Color(0x4D000000);
+  static const Color borderImage = Color(0xFFC3C2C2);
+  static const Color borderCard = Color(0x4D000000);
 
   // ---- Icons -----
   static const Color serviceSearchIcon = Color(0x800056A4);

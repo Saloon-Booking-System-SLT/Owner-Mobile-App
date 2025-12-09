@@ -26,28 +26,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: AppColors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        surfaceTintColor: Colors.transparent,
         backgroundColor: AppColors.white,
         elevation: 0,
+        titleSpacing: 20,
         title: const Text(
           'Dashboard',
           style: TextStyle(
             color: AppColors.textPrimary,
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: FontWeight.w700,
+            letterSpacing: -0.5,
           ),
         ),
-        // centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.person, color: AppColors.black),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SalonProfileScreen(),
-                ),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: IconButton(
+              icon: const Icon(Icons.person, color: AppColors.black, size: 26),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SalonProfileScreen()),
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -55,47 +58,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: _buildStatCard('Total\nAppointments', '120'),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildStatCard('Today\'s\nAppointments', '10'),
-                      ),
+                      Expanded(child: _buildStatCard('Total\nAppointments', '120')),
+                      const SizedBox(width: 14),
+                      Expanded(child: _buildStatCard('Today\'s\nAppointments', '10')),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 14),
                   Row(
                     children: [
-                      Expanded(
-                        child: _buildStatCard('Upcoming\nAppointments', '25'),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildStatCard('Pending\nApprovals', '5'),
-                      ),
+                      Expanded(child: _buildStatCard('Upcoming\nAppointments', '25')),
+                      const SizedBox(width: 14),
+                      Expanded(child: _buildStatCard('Pending\nApprovals', '5')),
                     ],
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 24),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
               child: Text(
                 'All Appointments',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: AppColors.black,
+                  letterSpacing: -0.5,
                 ),
               ),
             ),
+            const SizedBox(height: 4),
             _buildAppointmentItem(
               index: 0,
               date: 'Oct 26, 2025',
@@ -138,29 +137,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildStatCard(String title, String value) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       decoration: BoxDecoration(
         color: const Color(0xFFE8F2FF),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 16,
+            style: const TextStyle(
+              fontSize: 15,
               color: AppColors.textPrimary,
-              height: 1.3,
+              height: 1.4,
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.2,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
             value,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: FontWeight.w700,
               color: AppColors.black,
+              letterSpacing: -0.5,
             ),
           ),
         ],
@@ -180,11 +189,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final statusColor = _getStatusColor(status);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0x80F5F5F5),
-        borderRadius: BorderRadius.circular(8),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, const Color(0xFFF0F4FF)],
+        ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE1E8F5), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,18 +214,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: AppColors.white,
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
                 ),
-                child: Icon(
-                  Icons.calendar_today,
-                  size: 20,
-                  color: AppColors.black,
-                ),
+                child: const Icon(Icons.calendar_today, size: 22, color: AppColors.black),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,39 +234,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Text(
                             '$date • $name',
                             style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
                               color: AppColors.textPrimary,
+                              letterSpacing: -0.2,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        const SizedBox(width: 8),
                         Text(
                           time,
-                          style: TextStyle(
-                            fontSize: 16,
+                          style: const TextStyle(
+                            fontSize: 15,
                             color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -0.2,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Text(
                       'Customer ID: $customerId',
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: const TextStyle(
+                        fontSize: 13,
                         color: AppColors.dashboardText,
                         fontWeight: FontWeight.w400,
+                        letterSpacing: -0.1,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       service,
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: const TextStyle(
+                        fontSize: 13,
                         color: AppColors.dashboardText,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -0.1,
                       ),
                     ),
                   ],
@@ -256,11 +279,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           Align(
             alignment: Alignment.centerRight,
             child: PopupMenuButton<String>(
-              offset: const Offset(0, 35),
+              offset: const Offset(0, 40),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               onSelected: (String newStatus) {
                 setState(() {
                   _appointmentStatuses[index] = newStatus;
@@ -279,20 +303,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     _buildPopupMenuItem('In Progress', AppColors.statusGreen),
                     _buildPopupMenuItem('Cancel', AppColors.statusRed),
                   ],
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    status,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: statusColor,
-                      fontWeight: FontWeight.w600,
+              child: Container(
+                width: 130,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        status,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: statusColor,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.1,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 4),
-                  Icon(Icons.arrow_drop_down, size: 18, color: statusColor),
-                ],
+                    Icon(Icons.arrow_drop_down, size: 20, color: statusColor),
+                  ],
+                ),
               ),
             ),
           ),
@@ -304,14 +339,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   PopupMenuItem<String> _buildPopupMenuItem(String text, Color color) {
     return PopupMenuItem<String>(
       value: text,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w600,
-          fontSize: 13,
-        ),
-      ),
+      child: Text(text, style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 13)),
     );
   }
 

@@ -17,24 +17,22 @@ class _AccountSuccessScreenState extends State<AccountSuccessScreen> {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
-              (route) => false,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          (route) => false,
         );
       }
     });
   }
 
-  void _handleClose(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-          (route) => false,
-    );
-  }
+  // void _handleClose(BuildContext context) {
+  //   Navigator.pushAndRemoveUntil(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => const LoginScreen(),
+  //     ),
+  //         (route) => false,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +55,7 @@ class _AccountSuccessScreenState extends State<AccountSuccessScreen> {
                       color: Color(0xFF0D5EAC),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.check,
-                      size: 70,
-                      color: Colors.white,
-                    ),
+                    child: const Icon(Icons.check, size: 70, color: Colors.white),
                   ),
                   const SizedBox(height: 32),
 
@@ -82,26 +76,26 @@ class _AccountSuccessScreenState extends State<AccountSuccessScreen> {
           ),
 
           // Close button
-          Positioned(
-            top: 40,
-            right: 16,
-            child: GestureDetector(
-              onTap: () => _handleClose(context),
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.close,
-                  size: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: 40,
+          //   right: 16,
+          //   child: GestureDetector(
+          //     onTap: () => _handleClose(context),
+          //     child: Container(
+          //       width: 36,
+          //       height: 36,
+          //       decoration: BoxDecoration(
+          //         color: Colors.grey[400],
+          //         shape: BoxShape.circle,
+          //       ),
+          //       child: const Icon(
+          //         Icons.close,
+          //         size: 20,
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
