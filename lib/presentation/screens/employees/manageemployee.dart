@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-
-
+import '../../../core/theme/colors.dart';
 
 class Employee {
   final String role;
   final String name;
   final String availability;
 
-  Employee({
-    required this.role,
-    required this.name,
-    required this.availability,
-  });
+  Employee({required this.role, required this.name, required this.availability});
 }
 
 class ManageEmployeesScreen extends StatelessWidget {
@@ -25,11 +20,7 @@ class ManageEmployeesScreen extends StatelessWidget {
         name: 'Sophia Bennett',
         availability: 'Service Availability - Female',
       ),
-      Employee(
-        role: 'Barber',
-        name: 'Ethan Carter',
-        availability: 'Service Availability - Male',
-      ),
+      Employee(role: 'Barber', name: 'Ethan Carter', availability: 'Service Availability - Male'),
       Employee(
         role: 'Nail Technician',
         name: 'Olivia Harper',
@@ -40,11 +31,7 @@ class ManageEmployeesScreen extends StatelessWidget {
         name: 'Sophia Bennett',
         availability: 'Service Availability - Female',
       ),
-      Employee(
-        role: 'Barber',
-        name: 'Ethan Carter',
-        availability: 'Service Availability - Male',
-      ),
+      Employee(role: 'Barber', name: 'Ethan Carter', availability: 'Service Availability - Male'),
       Employee(
         role: 'Nail Technician',
         name: 'Olivia Harper',
@@ -53,41 +40,36 @@ class ManageEmployeesScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: AppColors.white,
         elevation: 0,
         leading: Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 12),
           child: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back, color: Colors.black, size: 24),
+            icon: const Icon(Icons.arrow_back, color: AppColors.black, size: 26),
           ),
         ),
+        titleSpacing: 0,
         title: const Text(
           'Manage Employees',
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.5,
           ),
         ),
         centerTitle: false,
       ),
       body: ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: employees.length,
-        separatorBuilder: (context, index) => Divider(
-          height: 1,
-          thickness: 1,
-          color: Colors.grey.shade300,
-        ),
+        separatorBuilder: (context, index) => const SizedBox(height: 0),
         itemBuilder: (context, index) {
-          return EmployeeCard(
-            employee: employees[index],
-            onEdit: () {},
-            onDelete: () {},
-          );
+          return EmployeeCard(employee: employees[index], onEdit: () {}, onDelete: () {});
         },
       ),
     );
@@ -108,8 +90,25 @@ class EmployeeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, Color(0xFFF0F4FF)],
+        ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE1E8F5), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -119,60 +118,54 @@ class EmployeeCard extends StatelessWidget {
               children: [
                 Text(
                   employee.role,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w400,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.dashboardText,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: -0.1,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 Text(
                   employee.name,
                   style: const TextStyle(
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: AppColors.textPrimary,
+                    letterSpacing: -0.2,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   employee.availability,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 13,
-                    color: Colors.grey.shade600,
+                    color: AppColors.dashboardText,
                     fontWeight: FontWeight.w400,
+                    letterSpacing: -0.1,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
                 Row(
                   children: [
-                    ActionButton(
-                      label: 'Edit',
-                      onPressed: onEdit,
-                    ),
+                    ActionButton(label: 'Edit', onPressed: onEdit),
                     const SizedBox(width: 12),
-                    ActionButton(
-                      label: 'Delete',
-                      onPressed: onDelete,
-                    ),
+                    ActionButton(label: 'Delete', onPressed: onDelete),
                   ],
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Container(
-            width: 60,
-            height: 60,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
-              color: Colors.grey.shade400,
+              color: Colors.grey[200],
               shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFE1E8F5), width: 2),
             ),
-            child: Icon(
-              Icons.person_outline,
-              color: Colors.grey.shade100,
-              size: 32,
-            ),
+            child: Icon(Icons.person_outline, color: Colors.grey[600], size: 30),
           ),
         ],
       ),
@@ -184,28 +177,36 @@ class ActionButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
 
-  const ActionButton({
-    Key? key,
-    required this.label,
-    required this.onPressed,
-  }) : super(key: key);
+  const ActionButton({Key? key, required this.label, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bool isDelete = label == 'Delete';
     return Material(
-      color: Colors.grey.shade200,
-      borderRadius: BorderRadius.circular(8),
+      color: isDelete ? AppColors.statusRed.withOpacity(0.1) : const Color(0xFFE8F2FF),
+      borderRadius: BorderRadius.circular(10),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(10),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color:
+                  isDelete
+                      ? AppColors.statusRed.withOpacity(0.3)
+                      : const Color(0xFF0D5EAC).withOpacity(0.3),
+              width: 1,
+            ),
+          ),
           child: Text(
             label,
             style: TextStyle(
-              color: Colors.grey.shade800,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+              color: isDelete ? AppColors.statusRed : const Color(0xFF0D5EAC),
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -0.1,
             ),
           ),
         ),
