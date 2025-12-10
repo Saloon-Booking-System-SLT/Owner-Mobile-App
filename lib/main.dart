@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salon_slt/presentation/screens/home/splash_screen.dart';
+import 'presentation/screens/splash_screen/splash_screen.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'eSalon',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const SplashScreen(), 
     );
   }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "salon_slt",
-    "short_name": "salon_slt",
+    "name": "owner_salon_management",
+    "short_name": "owner_salon_management",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

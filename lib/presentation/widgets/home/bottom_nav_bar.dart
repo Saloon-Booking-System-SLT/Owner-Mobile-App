@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:owner_salon_management/presentation/screens/appoinments/appoinments.dart';
+import 'package:owner_salon_management/presentation/screens/feedbacks/more.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../screens/appoinments/appointmentscreen.dart';
-import '../../screens/feedbacks/feedbackmore.dart';
-import '../../screens/home/dashboardscreen.dart';
-import '../../screens/services/managescreen.dart';
+import '../../screens/home/dashboard.dart';
+import '../../screens/manage/manage_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
-
   const BottomNavBar({super.key, required this.currentIndex});
 
   void _onItemTapped(BuildContext context, int index) {
     if (index == currentIndex) return;
-
     switch (index) {
       case 0:
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+          MaterialPageRoute(builder: (context) => const Dashboard()),
         );
         break;
       case 1:
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const AppointmentsScreen()),
+          MaterialPageRoute(builder: (context) => const Appointments()),
         );
         break;
       case 2:
@@ -31,9 +28,9 @@ class BottomNavBar extends StatelessWidget {
         );
         break;
       case 3:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const MoreScreen()),
-        );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MorePage()),
+      );
         break;
     }
   }
@@ -42,7 +39,7 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -55,9 +52,9 @@ class BottomNavBar extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: (index) => _onItemTapped(context, index),
         type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.navBackground,
-        selectedItemColor: AppColors.textPrimary,
-        unselectedItemColor: AppColors.text7,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.blue.shade900,
+        unselectedItemColor: Colors.black,
         selectedFontSize: 12,
         unselectedFontSize: 12,
         iconSize: 24,
