@@ -30,39 +30,33 @@ class _SalonTypeDropdownState extends State<SalonTypeDropdown> {
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
         Container(
-          height: 64,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          height: 52,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Colors.grey.shade300,
-              width: 1.5,
-            ),
+            border: Border.all(color: Colors.grey.shade300, width: 1.5),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: widget.selectedSalonType,
               hint: const Text(
                 'Select Salon type Ex: Unisex',
-                style: TextStyle(
-                  color: Colors.black38,
-                  fontSize: 16,
-                ),
+                style: TextStyle(color: Colors.black, fontSize: 16),
               ),
               isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black38),
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.black38,
+              ),
               items: widget.salonTypes.map((type) {
                 return DropdownMenuItem(
                   value: type,
                   child: Text(
                     type,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
+                    style: const TextStyle(color: Colors.black, fontSize: 16),
                   ),
                 );
               }).toList(),

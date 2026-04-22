@@ -5,7 +5,7 @@ import 'package:owner_salon_management/presentation/screens/auth/widgets/passwor
 import 'package:owner_salon_management/presentation/screens/auth/widgets/reset_password_app_bar.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/reset_password_button.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/reset_password_header.dart';
-import 'package:owner_salon_management/presentation/screens/home/dashboard.dart';
+import '../../../app_main_page.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -41,8 +41,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  Center(
-                    child: const ResetPasswordHeader(),
+                  const Center(
+                    child: ResetPasswordHeader(),
                   ),
                   const SizedBox(height: 60),
                   Container(
@@ -90,7 +90,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         // Navigate to dashboard after successful password reset
                         Future.delayed(const Duration(seconds: 1), () {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => const Dashboard()),
+                            MaterialPageRoute(builder: (context) => const SalonMainApp()),
                             (route) => false,
                           );
                         });

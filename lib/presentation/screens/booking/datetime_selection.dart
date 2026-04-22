@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';  // Add this import
+import 'package:intl/intl.dart';
+import 'package:owner_salon_management/data/services/booking_service.dart';
+import 'package:owner_salon_management/data/models/staff_model.dart';
+import 'package:owner_salon_management/data/models/service_model.dart';
 import 'appoinment_summary.dart';
 
 class DateTimeSelectionScreen extends StatefulWidget {
+  final String salonId;
   final String customerName;
   final String customerPhoneNumber;
   final String customerEmail;
-  final List<ServiceItem> selectedServices;
-  final Professional selectedProfessional;
+  final List<ServiceModel> selectedServices;
+  final StaffModel selectedProfessional;
 
   const DateTimeSelectionScreen({
     super.key,
+    required this.salonId,
     required this.customerName,
     required this.customerPhoneNumber,
     required this.customerEmail,
@@ -19,21 +24,56 @@ class DateTimeSelectionScreen extends StatefulWidget {
   });
 
   @override
-  State<DateTimeSelectionScreen> createState() => _DateTimeSelectionScreenState();
+  State<DateTimeSelectionScreen> createState() =>
+      _DateTimeSelectionScreenState();
 }
 
 class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
   DateTime _selectedDate = DateTime.now();
-  TimeSlot? _selectedTimeSlot;
+  TimeSlotModel? _selectedTimeSlot;
+  List<TimeSlotModel> _timeSlots = [];
+  bool _isLoading = false;
+  String _errorMessage = '';
 
-  final List<TimeSlot> _timeSlots = [
-    TimeSlot(time: '09:00 - 10:00', isAvailable: true),
-    TimeSlot(time: '12:00 - 13:00', isAvailable: true),
-    TimeSlot(time: '10:00 - 11:00', isAvailable: true),
-    TimeSlot(time: '13:00 - 14:00', isAvailable: true),
-    TimeSlot(time: '11:00 - 12:00', isAvailable: true),
-    TimeSlot(time: '15:00 - 16:00', isAvailable: true),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadTimeSlots();
+  }
+
+  Future<void> _loadTimeSlots() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = '';
+        _selectedTimeSlot = null;
+      });
+
+      final formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
+
+      // Use the professional's ID (non-nullable, since it's required in the model)
+      final professionalId = widget.selectedProfessional.id ?? '';
+
+      if (professionalId.isEmpty) {
+        throw Exception('Professional ID is missing');
+      }
+
+      final slots = await BookingService.fetchAvailableTimeSlots(
+        professionalId: professionalId,
+        date: formattedDate,
+      );
+
+      setState(() {
+        _timeSlots = slots;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Failed to load time slots: $e';
+      });
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -50,19 +90,19 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
               onSurface: Colors.black,
             ),
             textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.blue,
-              ),
+              style: TextButton.styleFrom(foregroundColor: Colors.blue),
             ),
           ),
           child: child!,
         );
       },
     );
+
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
       });
+      _loadTimeSlots();
     }
   }
 
@@ -97,23 +137,70 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                 children: [
                   const Text(
                     'Select a Date',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   _buildDateSelector(),
                   const SizedBox(height: 24),
-                  const Text(
-                    'Available Time slots',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Available Time slots',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      if (_isLoading)
+                        const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 16),
-                  _buildTimeSlots(),
+                  if (_errorMessage.isNotEmpty)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade50,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            _errorMessage,
+                            style: TextStyle(color: Colors.red.shade900),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: _loadTimeSlots,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red.shade900,
+                            ),
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    )
+                  else if (_timeSlots.isEmpty && !_isLoading)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
+                        'No available time slots for this date. Please select another date.',
+                        style: TextStyle(color: Colors.orange),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  else
+                    _buildTimeSlots(),
                 ],
               ),
             ),
@@ -126,21 +213,22 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
               child: ElevatedButton(
                 onPressed: _selectedTimeSlot != null
                     ? () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AppointmentSummaryScreen(
-                        customerName: widget.customerName,
-                        customerPhoneNumber: widget.customerPhoneNumber,
-                        customerEmail: widget.customerEmail,
-                        selectedServices: widget.selectedServices,
-                        selectedProfessional: widget.selectedProfessional,
-                        selectedDate: _selectedDate,
-                        selectedTimeSlot: _selectedTimeSlot!,
-                      ),
-                    ),
-                  );
-                }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AppointmentSummaryScreen(
+                              salonId: widget.salonId,
+                              customerName: widget.customerName,
+                              customerPhoneNumber: widget.customerPhoneNumber,
+                              customerEmail: widget.customerEmail,
+                              selectedServices: widget.selectedServices,
+                              selectedProfessional: widget.selectedProfessional,
+                              selectedDate: _selectedDate,
+                              selectedTimeSlot: _selectedTimeSlot!,
+                            ),
+                          ),
+                        );
+                      }
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue.shade900,
@@ -186,11 +274,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            const Icon(
-              Icons.calendar_month,
-              size: 20,
-              color: Colors.black,
-            ),
+            const Icon(Icons.calendar_month, size: 20, color: Colors.black),
           ],
         ),
       ),
@@ -202,118 +286,51 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 1.1,
+        crossAxisCount: 3,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 2.2,
       ),
       itemCount: _timeSlots.length,
       itemBuilder: (context, index) {
         final slot = _timeSlots[index];
-        final isSelected = _selectedTimeSlot == slot;
-        return _buildTimeSlotCard(slot, isSelected);
+        final isSelected = _selectedTimeSlot?.id == slot.id;
+        return _buildTimeSlotChip(slot, isSelected);
       },
     );
   }
 
-  Widget _buildTimeSlotCard(TimeSlot slot, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isSelected ? Colors.blue : Colors.grey.shade300,
-          width: isSelected ? 2 : 1,
+  Widget _buildTimeSlotChip(TimeSlotModel slot, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (_selectedTimeSlot?.id == slot.id) {
+            _selectedTimeSlot = null;
+          } else {
+            _selectedTimeSlot = slot;
+          }
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blue.shade900 : Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected ? Colors.blue.shade900 : Colors.grey.shade300,
+            width: isSelected ? 2 : 1,
+          ),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade200,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            slot.time,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+        child: Center(
+          child: Text(
+            slot.startTime,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: isSelected ? Colors.white : Colors.black,
             ),
           ),
-          const SizedBox(height: 8),
-          if (slot.isAvailable)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                const Text(
-                  'Available',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.green,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          const SizedBox(height: 12),
-          GestureDetector(
-            onTap: slot.isAvailable
-                ? () {
-              setState(() {
-                if (_selectedTimeSlot == slot) {
-                  _selectedTimeSlot = null;
-                } else {
-                  _selectedTimeSlot = slot;
-                }
-              });
-            }
-                : null,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.white : Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(6),
-                border: isSelected ? Border.all(color: Colors.grey.shade400) : null,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Select',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: slot.isAvailable ? Colors.black : Colors.grey,
-                    ),
-                  ),
-                  if (isSelected) ...[
-                    const SizedBox(width: 6),
-                    const Icon(
-                      Icons.delete_outline,
-                      size: 16,
-                      color: Colors.black,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

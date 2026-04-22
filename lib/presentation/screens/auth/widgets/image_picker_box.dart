@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerBox extends StatefulWidget {
-  final File? selectedImage;
-  final ValueChanged<File?> onImageSelected;
+  final XFile? selectedImage;
+  final ValueChanged<XFile?> onImageSelected;
 
   const ImagePickerBox({
     super.key,
@@ -128,7 +129,7 @@ class _ImagePickerBoxState extends State<ImagePickerBox> {
       );
 
       if (image != null) {
-        widget.onImageSelected(File(image.path));
+        widget.onImageSelected(image);
       }
     } catch (e) {
       debugPrint('Error picking image: $e');
@@ -170,12 +171,19 @@ class _ImagePickerBoxState extends State<ImagePickerBox> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.file(
-                      widget.selectedImage!,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
+                    child: kIsWeb
+                        ? Image.network(
+                            widget.selectedImage!.path,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          )
+                        : Image.file(
+                            File(widget.selectedImage!.path),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
                   ),
                   // Change Image Button
                   Positioned(

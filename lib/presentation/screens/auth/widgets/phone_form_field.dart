@@ -22,9 +22,7 @@ class PhoneFormField extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: errorText != null
-                  ? Colors.red
-                  : const Color(0xFFE0E0E0),
+              color: errorText != null ? Colors.red : const Color(0xFFE0E0E0),
               width: 1,
             ),
           ),
@@ -48,13 +46,10 @@ class PhoneFormField extends StatelessWidget {
               focusedErrorBorder: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 16,
+                vertical: 12,
               ),
             ),
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
           ),
         ),
         if (errorText != null)

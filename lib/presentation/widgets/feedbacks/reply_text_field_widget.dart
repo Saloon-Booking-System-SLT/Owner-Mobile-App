@@ -30,7 +30,7 @@ class ReplyTextFieldWidget extends StatelessWidget {
         textAlignVertical: TextAlignVertical.top,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 16,
             color: Colors.black38,
             fontWeight: FontWeight.w400,

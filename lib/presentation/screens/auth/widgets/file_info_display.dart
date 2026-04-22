@@ -1,8 +1,8 @@
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
 class FileInfoDisplay extends StatelessWidget {
-  final File? selectedImage;
+  final XFile? selectedImage;
   final VoidCallback? onChooseFile;
 
   const FileInfoDisplay({
@@ -13,15 +13,13 @@ class FileInfoDisplay extends StatelessWidget {
 
   String _getFileName() {
     if (selectedImage == null) return 'No file chosen';
-    return selectedImage!.path.split('/').last;
+    return selectedImage!.name;
   }
 
   String _getFileSize() {
-    if (selectedImage == null) return '';
-    final bytes = selectedImage!.lengthSync();
-    if (bytes < 1024) return '$bytes B';
-    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    // For simplicity and web compatibility (length() is async), 
+    // we omit the size display here or just return empty.
+    return '';
   }
 
   @override

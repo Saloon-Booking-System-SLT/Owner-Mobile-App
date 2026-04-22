@@ -18,7 +18,7 @@ class SalonNameFormField extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
         TextFormField(
           controller: controller,
           validator: (value) {
@@ -34,39 +34,42 @@ class SalonNameFormField extends StatelessWidget {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(
-                color: Colors.grey.shade300,  // Default border color
+                color: Colors.grey.shade300, // Default border color
                 width: 1.0,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide:BorderSide(
-                color: Colors.grey.shade300,  // Border color when not focused
+              borderSide: BorderSide(
+                color: Colors.grey.shade300, // Border color when not focused
                 width: 1.0,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
-                color: Colors.blue,  // Border color when focused
+                color: Colors.blue, // Border color when focused
                 width: 2.0,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
-                color: Colors.red,  // Border color when there's an error
+                color: Colors.red, // Border color when there's an error
                 width: 1.0,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
-                color: Colors.red,  // Border color when focused with error
+                color: Colors.red, // Border color when focused with error
                 width: 2.0,
               ),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
           ),
         ),
       ],

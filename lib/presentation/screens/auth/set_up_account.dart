@@ -5,7 +5,6 @@ import 'package:owner_salon_management/presentation/screens/auth/widgets/locatio
 import 'package:owner_salon_management/presentation/screens/auth/widgets/interactive_map_picker.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/salon_name_form_field.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/salon_type_dropdown.dart';
-import 'package:owner_salon_management/presentation/screens/auth/widgets/setup_account_app_bar.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/setup_account_next_button.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/working_hours_picker.dart';
 

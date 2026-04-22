@@ -14,4 +14,9 @@ class AppColors {
   static const Color statusConfirmedBg = lightBlue;
   static const Color statusCancelled = Color(0xFFEF4444);
   static const Color statusCancelledBg = Color(0xFFFFEBEE);
+
+  // Calendar dot colors
+  static const Color completedDot = Color(0xFF4CAF50);
+  static const Color upcomingDot = Color(0xFF5C6BC0);
+  static const Color blockedDot = Color(0xFF9E9E9E);
 }

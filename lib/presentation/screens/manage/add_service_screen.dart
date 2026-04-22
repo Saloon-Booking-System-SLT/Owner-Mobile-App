@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../../data/models/service_model.dart';
+import '../../../data/services/auth_service.dart';
+import '../../../data/services/services_service.dart';
 
 class AddServiceScreen extends StatefulWidget {
-  const AddServiceScreen({Key? key}) : super(key: key);
+  final ServiceModel? existingService;
+  const AddServiceScreen({Key? key, this.existingService}) : super(key: key);
 
   @override
   State<AddServiceScreen> createState() => _AddServiceScreenState();
@@ -21,8 +25,9 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
 
   String _selectedDuration = '15min';
   String _selectedGender = 'Unisex';
-  File? _selectedImage;
+  XFile? _selectedImage;
   String? _imageFileName;
+  bool _isSubmitting = false;
 
   final List<String> _durationOptions = [
     '15min',
@@ -34,6 +39,21 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   ];
 
   final List<String> _genderOptions = ['Unisex', 'Male', 'Female', 'Both'];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.existingService != null) {
+      final service = widget.existingService!;
+      _nameController.text = service.name;
+      _categoryController.text = service.category;
+      _descriptionController.text = service.description;
+      _priceController.text = service.price.toString();
+      _selectedDuration = '${service.duration}min';
+      _selectedGender = service.gender;
+      _imageUrlController.text = service.imageUrl ?? '';
+    }
+  }
 
   @override
   void dispose() {
@@ -60,7 +80,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
 
       if (image != null) {
         setState(() {
-          _selectedImage = File(image.path);
+          _selectedImage = image;
           _imageFileName = image.name;
         });
       }
@@ -85,7 +105,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
 
       if (photo != null) {
         setState(() {
-          _selectedImage = File(photo.path);
+          _selectedImage = photo;
           _imageFileName = photo.name;
         });
       }
@@ -144,21 +164,63 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     });
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
-      final service = ServiceModel(
-        name: _nameController.text.trim(),
-        category: _categoryController.text.trim(),
-        description: _descriptionController.text.trim(),
-        price: double.parse(_priceController.text),
-        duration: _parseDuration(_selectedDuration),
-        gender: _selectedGender,
-        imagePath: _selectedImage?.path,
-        imageUrl: _imageUrlController.text.trim().isNotEmpty
-            ? _imageUrlController.text.trim()
-            : null,
-      );
-      Navigator.of(context).pop(service);
+      setState(() => _isSubmitting = true);
+      try {
+        final profile = await AuthService.getOwnerProfile();
+        final salonId = profile['salon'] != null 
+            ? profile['salon']['id'] 
+            : profile['_id'];
+
+        if (salonId == null) throw Exception('Salon ID not found');
+
+        final service = ServiceModel(
+          id: widget.existingService?.id,
+          name: _nameController.text.trim(),
+          category: _categoryController.text.trim(),
+          description: _descriptionController.text.trim(),
+          price: double.parse(_priceController.text),
+          duration: _parseDuration(_selectedDuration),
+          gender: _selectedGender,
+          imagePath: _selectedImage?.path,
+          imageUrl: _imageUrlController.text.trim().isNotEmpty
+              ? _imageUrlController.text.trim()
+              : null,
+        );
+
+        final ServiceModel result;
+        if (widget.existingService != null) {
+          result = await ServicesService.updateService(
+            widget.existingService!.id!,
+            service,
+            imageFile: _selectedImage,
+          );
+        } else {
+          result = await ServicesService.addService(
+            service,
+            salonId,
+            imageFile: _selectedImage,
+          );
+        }
+
+        if (mounted) {
+          Navigator.of(context).pop(result);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to add service: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isSubmitting = false);
+        }
+      }
     }
   }
 
@@ -174,8 +236,8 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
           icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1A1A)),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          'Add Service',
+        title: Text(
+          widget.existingService != null ? 'Edit Service' : 'Add Service',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -193,82 +255,6 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // // Image Picker Section
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     color: const Color(0xFFF5F5F5),
-                  //     borderRadius: BorderRadius.circular(36),
-                  //     border: Border.all(
-                  //       color: const Color(0xFFE0E0E0),
-                  //       width: 1,
-                  //     ),
-                  //   ),
-                  //   child: _selectedImage != null
-                  //       ? Stack(
-                  //     children: [
-                  //       ClipRRect(
-                  //         borderRadius: BorderRadius.circular(16),
-                  //         child: Image.file(
-                  //           _selectedImage!,
-                  //           height: 220,
-                  //           width: double.infinity,
-                  //           fit: BoxFit.cover,
-                  //         ),
-                  //       ),
-                  //       Positioned(
-                  //         top: 12,
-                  //         right: 12,
-                  //         child: Container(
-                  //           decoration: BoxDecoration(
-                  //             color: Colors.black.withOpacity(0.6),
-                  //             shape: BoxShape.circle,
-                  //           ),
-                  //           child: IconButton(
-                  //             icon: const Icon(
-                  //               Icons.close,
-                  //               color: Colors.white,
-                  //               size: 22,
-                  //             ),
-                  //             onPressed: _removeImage,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   )
-                  //       : InkWell(
-                  //     onTap: _showImageSourceDialog,
-                  //     borderRadius: BorderRadius.circular(16),
-                  //     child: Container(
-                  //       padding: const EdgeInsets.symmetric(vertical: 60),
-                  //       child: Column(
-                  //         children: [
-                  //           Icon(
-                  //             Icons.add_photo_alternate_outlined,
-                  //             size: 64,
-                  //             color: Colors.grey.shade500,
-                  //           ),
-                  //           const SizedBox(height: 12),
-                  //           Text(
-                  //             'Add Service Image',
-                  //             style: TextStyle(
-                  //               fontSize: 18,
-                  //               color: Colors.grey.shade700,
-                  //               fontWeight: FontWeight.w600,
-                  //             ),
-                  //           ),
-                  //           const SizedBox(height: 6),
-                  //           Text(
-                  //             'Tap to select from gallery or camera',
-                  //             style: TextStyle(
-                  //               fontSize: 14,
-                  //               color: Colors.grey.shade500,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(height: 24),
                   TextFormField(
                     controller: _nameController,
@@ -284,7 +270,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 12,
                       ),
                     ),
                     validator: (value) {
@@ -309,7 +295,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 12,
                       ),
                     ),
                     validator: (value) {
@@ -335,7 +321,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 12,
                       ),
                       alignLabelWithHint: true,
                     ),
@@ -363,7 +349,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 12,
                       ),
                     ),
                     validator: (value) {
@@ -389,7 +375,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 12,
                       ),
                     ),
                     items: _durationOptions.map((String duration) {
@@ -419,7 +405,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 12,
                       ),
                     ),
                     items: _genderOptions.map((String gender) {
@@ -452,12 +438,19 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.file(
-                                  _selectedImage!,
-                                  height: 140,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: kIsWeb
+                                    ? Image.network(
+                                        _selectedImage!.path,
+                                        height: 140,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.file(
+                                        File(_selectedImage!.path),
+                                        height: 140,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                               Positioned(
                                 top: 8,
@@ -612,7 +605,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       Expanded(
                         flex: 2,
                         child: ElevatedButton(
-                          onPressed: _handleSubmit,
+                          onPressed: _isSubmitting ? null : _handleSubmit,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue.shade900,
                             foregroundColor: Colors.white,
@@ -622,13 +615,22 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                             ),
                             elevation: 0,
                           ),
-                          child: const Text(
-                            'Add Service',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          child: _isSubmitting
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  widget.existingService != null ? 'Update Service' : 'Add Service',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                         ),
                       ),
                     ],

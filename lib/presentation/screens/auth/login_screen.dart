@@ -4,10 +4,8 @@ import 'package:owner_salon_management/presentation/screens/auth/widgets/forgot_
 import 'package:owner_salon_management/presentation/screens/auth/widgets/email_form_field.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/password_form_field.dart';
 import 'package:owner_salon_management/presentation/screens/auth/widgets/login_button.dart';
-import 'package:owner_salon_management/presentation/screens/home/dashboard.dart';
-
+import '../../../app_main_page.dart';
 import '../../../data/services/auth_service.dart';
-import '../lang/select_language.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -61,26 +58,33 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin() async {
     try {
-      final resp = await AuthService.login(_emailController.text, _passwordController.text);
+      final resp = await AuthService.login(
+        _emailController.text,
+        _passwordController.text,
+      );
       // check approvalStatus
       final salon = resp['salon'];
       final approvalStatus = salon['approvalStatus'];
+      if (!mounted) return;
       if (approvalStatus != null && approvalStatus != 'approved') {
         // show message to user about pending approval
       }
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Dashboard()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const SalonMainApp()),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
-
 
   void _handleRegister() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const CreateAccountScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const CreateAccountScreen()),
     );
   }
 
@@ -88,24 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LanguageSelectionScreen(),
-              ),
-            );
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-            size: 28,
-          ),
-        ),
-      ),
+      appBar: AppBar(backgroundColor: Colors.white),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -114,28 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // IconButton(
-                  //   icon: const Icon(Icons.arrow_back),
-                  //   onPressed: () => Navigator.pop(context),
-                  //   padding: EdgeInsets.zero,
-                  //   alignment: Alignment.centerLeft,
-                  // ),
-                  // const SizedBox(height: 20),
                   Image.asset(
                     'assets/images/logo.png',
                     width: 120,
                     height: 120,
                     fit: BoxFit.contain,
                   ),
-                  SizedBox(height: 10),
-                  // Text(
-                  //   "Welcome to eSalon",
-                  //   style: TextStyle(
-                  //     fontWeight: FontWeight.bold,
-                  //     fontSize: 33.sp,
-                  //     color: AppColors.textPrimary,
-                  //   ),
-                  // ),
+                  const SizedBox(height: 10),
                   const Center(
                     child: Text(
                       'Login to your salon',
@@ -184,9 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const ForgotPasswordLink(),
                   const SizedBox(height: 20),
-                  LoginButton(
-                    onPressed: _handleLogin,
-                  ),
+                  LoginButton(onPressed: _handleLogin),
                   const SizedBox(height: 16),
                   Center(
                     child: Row(
@@ -194,10 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         const Text(
                           'Not registered yet? ',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13,
-                          ),
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
                         ),
                         GestureDetector(
                           onTap: _handleRegister,

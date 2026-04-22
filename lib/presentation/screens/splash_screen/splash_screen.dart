@@ -28,18 +28,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFECECEC),
+    return const Scaffold(
+      backgroundColor: Color(0xFFECECEC),
       body: Column(
         children: [
-          const Spacer(flex: 2),
+          Spacer(flex: 2),
           // Logo and text section
-          const Center(
+          Center(
             child: LogoAndTextSection(),
           ),
-          const Spacer(flex: 2),
+          Spacer(flex: 2),
           // SLT Mobitel logo at bottom
-          const BottomLogo(),
+          BottomLogo(),
         ],
       ),
     );

@@ -59,7 +59,7 @@ class UserInfoRow extends StatelessWidget {
     return Row(
       children: [
         // Avatar
-        UserAvatar(),
+        const UserAvatar(),
         const SizedBox(width: 16),
         // User Details
         Expanded(

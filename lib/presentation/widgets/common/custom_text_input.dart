@@ -28,9 +28,7 @@ class CustomTextField extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: errorText != null
-                  ? Colors.red
-                  : const Color(0xFFE0E0E0),
+              color: errorText != null ? Colors.red : const Color(0xFFE0E0E0),
               width: 1,
             ),
           ),
@@ -39,10 +37,7 @@ class CustomTextField extends StatelessWidget {
             obscureText: obscureText,
             keyboardType: keyboardType,
             onChanged: onChanged,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: const TextStyle(
@@ -53,7 +48,7 @@ class CustomTextField extends StatelessWidget {
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 16,
+                vertical: 12,
               ),
             ),
           ),

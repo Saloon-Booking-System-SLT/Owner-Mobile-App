@@ -12,10 +12,6 @@ class EmailFormField extends StatelessWidget {
     this.onChanged,
   });
 
-  bool _isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,9 +22,7 @@ class EmailFormField extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: errorText != null
-                  ? Colors.red
-                  : const Color(0xFFE0E0E0),
+              color: errorText != null ? Colors.red : const Color(0xFFE0E0E0),
               width: 1,
             ),
           ),
@@ -52,13 +46,10 @@ class EmailFormField extends StatelessWidget {
               focusedErrorBorder: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 16,
+                vertical: 12,
               ),
             ),
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
           ),
         ),
         if (errorText != null)

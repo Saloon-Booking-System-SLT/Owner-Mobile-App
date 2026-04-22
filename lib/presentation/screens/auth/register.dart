@@ -146,7 +146,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
         'Create Your Salon Account',
         style: TextStyle(
         fontSize: 24,

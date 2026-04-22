@@ -39,21 +39,26 @@ class _WorkingHoursPickerState extends State<WorkingHoursPicker> {
               hourMinuteTextColor: const Color(0xFF1565C0),
               dialHandColor: const Color(0xFF1565C0),
               dialBackgroundColor: const Color(0xFFF5F5F5),
-              dialTextColor: MaterialStateColor.resolveWith((states) =>
-                  states.contains(MaterialState.selected)
-                      ? Colors.white
-                      : const Color(0xFF1565C0)),
+              dialTextColor: MaterialStateColor.resolveWith(
+                (states) => states.contains(MaterialState.selected)
+                    ? Colors.white
+                    : const Color(0xFF1565C0),
+              ),
               entryModeIconColor: const Color(0xFF1565C0),
-              dayPeriodColor: MaterialStateColor.resolveWith((states) =>
-                  states.contains(MaterialState.selected)
-                      ? const Color(0xFF1565C0)
-                      : Colors.transparent),
-              dayPeriodTextColor: MaterialStateColor.resolveWith((states) =>
-                  states.contains(MaterialState.selected)
-                      ? Colors.white
-                      : const Color(0xFF1565C0)),
-              dayPeriodBorderSide:
-                  const BorderSide(color: Color(0xFF1565C0), width: 1),
+              dayPeriodColor: MaterialStateColor.resolveWith(
+                (states) => states.contains(MaterialState.selected)
+                    ? const Color(0xFF1565C0)
+                    : Colors.transparent,
+              ),
+              dayPeriodTextColor: MaterialStateColor.resolveWith(
+                (states) => states.contains(MaterialState.selected)
+                    ? Colors.white
+                    : const Color(0xFF1565C0),
+              ),
+              dayPeriodBorderSide: const BorderSide(
+                color: Color(0xFF1565C0),
+                width: 1,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(24),
               ),
@@ -95,22 +100,19 @@ class _WorkingHoursPickerState extends State<WorkingHoursPicker> {
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
         Row(
           children: [
             Expanded(
               child: GestureDetector(
                 onTap: () => _selectTime(true),
                 child: Container(
-                  height: 64,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  height: 52,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.grey.shade300,
-                      width: 1.5,
-                    ),
+                    border: Border.all(color: Colors.grey.shade300, width: 1.5),
                   ),
                   child: Row(
                     children: [
@@ -133,20 +135,17 @@ class _WorkingHoursPickerState extends State<WorkingHoursPicker> {
                 ),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             Expanded(
               child: GestureDetector(
                 onTap: () => _selectTime(false),
                 child: Container(
-                  height: 64,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  height: 52,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.grey.shade300,
-                      width: 1.5,
-                    ),
+                    border: Border.all(color: Colors.grey.shade300, width: 1.5),
                   ),
                   child: Row(
                     children: [
