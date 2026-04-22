@@ -1,4 +1,4 @@
-# salon_slt
+# owner_salon_management
 
 A new Flutter project.
 
