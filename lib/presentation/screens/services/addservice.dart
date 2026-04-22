@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-
+import '../../../core/theme/colors.dart';
 
 class AddServicesScreen extends StatefulWidget {
   const AddServicesScreen({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
   final TextEditingController _durationController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  
+
   String _selectedGender = '';
   String? _selectedAgeCategory;
   String? _uploadedFileName;
@@ -35,9 +35,9 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         elevation: 0,
         leading: Padding(
           padding: EdgeInsets.only(left: 20),
@@ -49,9 +49,9 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
         title: const Text(
           'Add Services',
           style: TextStyle(
-            color: Colors.black,
+            color: AppColors.textPrimary,
             fontSize: 20,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
           ),
         ),
         centerTitle: true,
@@ -68,7 +68,7 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
               hint: 'Enter service name',
             ),
             const SizedBox(height: 20),
-            
+
             _buildLabel('Duration'),
             const SizedBox(height: 8),
             _buildTextField(
@@ -76,7 +76,7 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
               hint: 'Enter duration',
             ),
             const SizedBox(height: 20),
-            
+
             _buildLabel('Price'),
             const SizedBox(height: 8),
             _buildTextField(
@@ -85,7 +85,7 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 20),
-            
+
             _buildLabel('Service Description'),
             const SizedBox(height: 8),
             _buildTextField(
@@ -93,7 +93,7 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
               hint: 'Enter Description',
             ),
             const SizedBox(height: 20),
-            
+
             _buildLabel('Gender'),
             const SizedBox(height: 8),
             Row(
@@ -106,17 +106,17 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
               ],
             ),
             const SizedBox(height: 20),
-            
+
             _buildLabel('Service Image'),
             const SizedBox(height: 8),
             _buildImageUploadSection(),
             const SizedBox(height: 20),
-            
+
             _buildLabel('Age Category'),
             const SizedBox(height: 8),
             _buildDropdown(),
             const SizedBox(height: 32),
-            
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -124,19 +124,19 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
                   // Handle add service
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0066CC),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: AppColors.buttonPrimary,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(6),
                   ),
                   elevation: 0,
                 ),
                 child: const Text(
                   'Add Service',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    color: AppColors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
@@ -168,22 +168,19 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(
-          color: Colors.grey.shade400,
-          fontSize: 14,
-        ),
+        hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
         filled: true,
         fillColor: Colors.grey.shade50,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: AppColors.placeholderBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: AppColors.placeholderBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Color(0xFF6B4CE6), width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(
@@ -196,7 +193,7 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
 
   Widget _buildGenderButton(String gender) {
     final isSelected = _selectedGender == gender;
-    
+
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -209,10 +206,13 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
-              color: isSelected ? const Color(0xFF6B4CE6) : Colors.grey.shade300,
+              color:
+                  isSelected
+                      ? AppColors.placeholderBorder
+                      : AppColors.placeholderBorder,
               width: isSelected ? 2 : 1,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
             gender,
@@ -220,7 +220,8 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              color: isSelected ? const Color(0xFF6B4CE6) : Colors.grey.shade600,
+              color:
+                  isSelected ? const Color(0xFF6B4CE6) : Colors.grey.shade600,
             ),
           ),
         ),
@@ -238,7 +239,7 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
           style: BorderStyle.solid,
           width: 1.5,
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         children: [
@@ -263,40 +264,26 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
           Row(
             children: [
               Expanded(
-                child: Divider(
-                  color: Colors.grey.shade300,
-                  thickness: 1,
-                ),
+                child: Divider(color: Colors.grey.shade300, thickness: 1),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Text(
                   'OR',
-                  style: TextStyle(
-                    color: Colors.grey.shade500,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
                 ),
               ),
               Expanded(
-                child: Divider(
-                  color: Colors.grey.shade300,
-                  thickness: 1,
-                ),
+                child: Divider(color: Colors.grey.shade300, thickness: 1),
               ),
             ],
           ),
           const SizedBox(height: 16),
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: Colors.grey.shade50,
-              border: Border.all(
-                color: Colors.grey.shade300,
-              ),
+              border: Border.all(color: Colors.grey.shade300),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -313,19 +300,13 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
                   ),
                   child: const Text(
                     'Choose File',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Text(
                   _uploadedFileName ?? 'Saloning.jpg',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
             ),
@@ -340,37 +321,35 @@ class _AddServicesScreenState extends State<AddServicesScreen> {
       value: _selectedAgeCategory,
       hint: Text(
         'Select Your Age Category',
-        style: TextStyle(
-          color: Colors.grey.shade400,
-          fontSize: 14,
-        ),
+        style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
       ),
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.grey.shade50,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: AppColors.placeholderBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: AppColors.placeholderBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6B4CE6), width: 2),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: AppColors.placeholderBorder,
+            width: 2,
+          ),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 14,
         ),
       ),
-      items: _ageCategories.map((category) {
-        return DropdownMenuItem(
-          value: category,
-          child: Text(category),
-        );
-      }).toList(),
+      items:
+          _ageCategories.map((category) {
+            return DropdownMenuItem(value: category, child: Text(category));
+          }).toList(),
       onChanged: (value) {
         setState(() {
           _selectedAgeCategory = value;

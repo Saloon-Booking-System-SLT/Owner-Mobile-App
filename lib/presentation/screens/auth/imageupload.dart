@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:salon_slt/presentation/screens/auth/successscreen.dart';
 
+import '../../../core/theme/colors.dart';
+
 class UploadSalonImageScreen extends StatefulWidget {
   const UploadSalonImageScreen({super.key});
 
@@ -47,9 +49,9 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
@@ -58,15 +60,15 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
         title: const Text(
           'Set up Your Account',
           style: TextStyle(
-            color: Colors.black87,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
           ),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(38.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -76,9 +78,9 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
             Text(
               'Upload Salon Image',
               style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[800],
-                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w400,
               ),
             ),
             const SizedBox(height: 16),
@@ -86,10 +88,10 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
             // Upload Container
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[50],
+                color: AppColors.cardBackground,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: Colors.grey[300]!,
+                  color: AppColors.borderImage,
                   width: 1.5,
                   strokeAlign: BorderSide.strokeAlignInside,
                 ),
@@ -102,7 +104,7 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
                   Icon(
                     Icons.cloud_upload_outlined,
                     size: 48,
-                    color: Colors.grey[600],
+                    color: AppColors.black,
                   ),
                   const SizedBox(height: 12),
                   
@@ -125,7 +127,7 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
                     children: [
                       Expanded(
                         child: Divider(
-                          color: Colors.grey[300],
+                          color: AppColors.divider,
                           thickness: 1,
                         ),
                       ),
@@ -135,14 +137,14 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
                           'OR',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[500],
+                            color: AppColors.divider,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                       Expanded(
                         child: Divider(
-                          color: Colors.grey[300],
+                          color: AppColors.divider,
                           thickness: 1,
                         ),
                       ),
@@ -158,21 +160,21 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
                       OutlinedButton(
                         onPressed: _handleChooseFile,
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.black87,
-                          side: BorderSide(color: Colors.grey[400]!),
+                          foregroundColor: AppColors.black,
+                          side: BorderSide(color: AppColors.borderCard),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                            horizontal: 18,
+                            vertical: 2,
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(1),
                           ),
                         ),
                         child: const Text(
                           'Choose file',
                           style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
@@ -184,8 +186,8 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
                         style: TextStyle(
                           fontSize: 13,
                           color: _selectedFileName != null 
-                              ? Colors.black87 
-                              : Colors.grey[500],
+                              ? AppColors.black
+                              : AppColors.gray50,
                         ),
                       ),
                     ],
@@ -199,8 +201,8 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
             ElevatedButton(
               onPressed: _handleFinishSetup,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0D5EAC),
-                foregroundColor: Colors.white,
+                backgroundColor:AppColors.buttonPrimary,
+                foregroundColor: AppColors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -210,8 +212,8 @@ class _UploadSalonImageScreenState extends State<UploadSalonImageScreen> {
               child: const Text(
                 'Finish Setup',
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
                   letterSpacing: 0.5,
                 ),
               ),

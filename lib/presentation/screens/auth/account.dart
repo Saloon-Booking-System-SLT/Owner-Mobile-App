@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
+import '../../../core/theme/colors.dart';
+import '../../widgets/common/common_button.dart';
+import '../../widgets/common/common_text_field.dart';
 import 'imageupload.dart';
-
-
 
 class SetupAccountScreen extends StatefulWidget {
   const SetupAccountScreen({super.key});
@@ -14,7 +14,7 @@ class SetupAccountScreen extends StatefulWidget {
 class _SetupAccountScreenState extends State<SetupAccountScreen> {
   final TextEditingController _salonNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController(
-    text: 'High level road, Maharagama, Sri Lanka',
+    // text: 'High level road, Maharagama, Sri Lanka',
   );
   final _formKey = GlobalKey<FormState>();
 
@@ -44,9 +44,7 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
     if (_formKey.currentState!.validate()) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => const UploadSalonImageScreen(),
-        ),
+        MaterialPageRoute(builder: (context) => const UploadSalonImageScreen()),
       );
     }
   }
@@ -77,71 +75,50 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: _handleBack,
         ),
         title: const Text(
           'Set up Your Account',
           style: TextStyle(
-            color: Colors.black87,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
           ),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(38.0),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 8),
-                
+
                 // Salon Name
                 Text(
                   'Salon Name',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 const SizedBox(height: 8),
-                TextFormField(
+                CustomTextField(
                   controller: _salonNameController,
-                  decoration: InputDecoration(
-                    hintText: 'Enter Your Salon Name',
-                    hintStyle: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 14,
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF2196F3)),
-                    ),
-                  ),
+                  hintText: 'Enter Your Salon Name',
+                  hintTextColor: AppColors.textPlaceholder,
+                  borderColor: AppColors.placeholderBorder,
+
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter salon name';
@@ -150,50 +127,66 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Salon Type
                 Text(
                   'Salon Type',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<String>(
                   value: _selectedSalonType,
-                  decoration: InputDecoration(
-                    hintText: 'Select Salon type Ex: Unisex',
-                    hintStyle: TextStyle(
-                      color: Colors.grey[400],
+                  hint: Text(
+                    'Select Salon type Ex: Unisex',
+                    style: TextStyle(
+                      color: AppColors.textPlaceholder,
                       fontSize: 14,
                     ),
+                  ),
+                  decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: AppColors.white,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 14,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
+                      borderSide: BorderSide(color: AppColors.textPlaceholder),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
+                      borderSide: BorderSide(color: AppColors.textPlaceholder),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF2196F3)),
+                      borderSide: const BorderSide(
+                        color: AppColors.textPlaceholder,
+                      ),
                     ),
                   ),
-                  items: _salonTypes.map((String type) {
-                    return DropdownMenuItem<String>(
-                      value: type,
-                      child: Text(type),
-                    );
-                  }).toList(),
+                  dropdownColor: AppColors.white,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: AppColors.textPrimary,
+                  ),
+                  items:
+                      _salonTypes.map((String type) {
+                        return DropdownMenuItem<String>(
+                          value: type,
+                          child: Text(
+                            type,
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 14,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedSalonType = newValue;
@@ -205,16 +198,27 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                     }
                     return null;
                   },
+                  selectedItemBuilder: (BuildContext context) {
+                    return _salonTypes.map((String type) {
+                      return Text(
+                        type,
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 14,
+                        ),
+                      );
+                    }).toList();
+                  },
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Working Hours
                 Text(
                   'Working Hours',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -229,8 +233,10 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                             vertical: 14,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey[300]!),
+                            color: AppColors.white,
+                            border: Border.all(
+                              color: AppColors.textPlaceholder,
+                            ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
@@ -240,12 +246,12 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                                 _formatTime(_startTime),
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.grey[700],
+                                  color: AppColors.textPlaceholder,
                                 ),
                               ),
                               Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.grey[600],
+                                color: AppColors.textPrimary,
                               ),
                             ],
                           ),
@@ -262,8 +268,10 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                             vertical: 14,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey[300]!),
+                            color: AppColors.white,
+                            border: Border.all(
+                              color: AppColors.textPlaceholder,
+                            ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
@@ -273,12 +281,12 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                                 _formatTime(_endTime),
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.grey[700],
+                                  color: AppColors.textPlaceholder,
                                 ),
                               ),
                               Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.grey[600],
+                                color: AppColors.textPrimary,
                               ),
                             ],
                           ),
@@ -288,66 +296,41 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Set Your Salon Location
                 Text(
                   'Set Your Salon Location',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 const SizedBox(height: 8),
-                TextFormField(
+                CustomTextField(
                   controller: _locationController,
-                  decoration: InputDecoration(
-                    hintText: 'Enter location',
-                    hintStyle: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 14,
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF2196F3)),
-                    ),
-                  ),
+                  hintText: 'Enter location',
+                  hintTextColor: AppColors.textPlaceholder,
+                  borderColor: AppColors.textPlaceholder,
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Map instruction
                 Text(
                   'Click on the map to pick location',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 12, color: AppColors.text4),
                 ),
                 const SizedBox(height: 12),
-                
+
                 // Map placeholder
                 Container(
                   height: 250,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey[300]!),
+                    // borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.gray50),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    // borderRadius: BorderRadius.circular(8),
                     child: Stack(
                       children: [
                         Image.network(
@@ -355,7 +338,7 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
-                              color: Colors.grey[200],
+                              color: AppColors.gray50,
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -391,25 +374,19 @@ class _SetupAccountScreenState extends State<SetupAccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                
-                // Next Button
-                ElevatedButton(
+
+                CustomButton(
                   onPressed: _handleNext,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0D5EAC),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 0,
-                  ),
+                  backgroundColor: AppColors.buttonPrimary,
+                  width: double.infinity,
+                  height: 40,
                   child: const Text(
                     'Next',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
                       letterSpacing: 0.5,
+                      color: AppColors.white,
                     ),
                   ),
                 ),

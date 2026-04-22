@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:salon_slt/core/responsive/extensions.dart';
 import 'package:salon_slt/presentation/screens/auth/login.dart';
+import '../../../core/responsive/size_config.dart';
+import '../../../core/responsive/spacing.dart';
+import '../../../core/theme/colors.dart';
+import '../../widgets/common/common_button.dart';
 
 
 class Language extends StatefulWidget {
@@ -14,121 +19,136 @@ class _LanguageState extends State<Language> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
+            padding: EdgeInsets.symmetric(horizontal: 28.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "Select Language",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: 28,
-                    color: Colors.black,
+                    fontSize: 28.sp,
+                    color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 16),
-                const Text(
+                SizedBox(height: Spacing.sm),
+                Text(
                   "Choose your preferred language to continue",
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
+                    fontSize: 16.sp,
+                    color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 40),
-                _buildLanguageButton(
-                  language: 'English',
-                  label: 'English',
+                SizedBox(height: 40.h),
+
+                CustomButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedLanguage = 'English';
+                    });
+                  },
+                  backgroundColor: selectedLanguage == 'English'
+                      ? AppColors.buttonPrimary
+                      : AppColors.white,
+                  borderColor: AppColors.borderPrimary,
+                  child: Text(
+                    "English",
+                    style: TextStyle(
+                      color: selectedLanguage == 'English'
+                          ? AppColors.text5
+                          : AppColors.black,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 16),
-                _buildLanguageButton(
-                  language: 'Sinhala',
-                  label: 'සිංහල',
+                SizedBox(height: Spacing.md),
+
+                CustomButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedLanguage = 'Sinhala';
+                    });
+                  },
+                  borderColor: AppColors.borderPrimary,
+                  backgroundColor: selectedLanguage == 'Sinhala'
+                      ? AppColors.buttonPrimary
+                      : AppColors.white,
+                  child: Text(
+                    "සිංහල",
+                    style: TextStyle(
+                      color: selectedLanguage == 'Sinhala'
+                          ? AppColors.text5
+                          : AppColors.black,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 16),
-                _buildLanguageButton(
-                  language: 'Tamil',
-                  label: 'தமிழ்',
+                SizedBox(height: Spacing.md),
+
+                CustomButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedLanguage = 'Tamil';
+                    });
+                  },
+                  borderColor: AppColors.borderPrimary,
+                  backgroundColor: selectedLanguage == 'Tamil'
+                      ? AppColors.buttonPrimary
+                      : AppColors.white,
+                  child: Text(
+                    "தமிழ்",
+                    style: TextStyle(
+                      color: selectedLanguage == 'Tamil'
+                          ? AppColors.text5
+                          : AppColors.black,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 250),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade900,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                SizedBox(height: 250.h),
+
+                CustomButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
                       ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Get started",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
+                    );
+                  },
+                  backgroundColor: AppColors.buttonPrimary,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Get started",
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500,
                         ),
-                        SizedBox(width: 8),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: Spacing.sm),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                        size: 18.w,
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageButton({
-    required String language,
-    required String label,
-  }) {
-    final isSelected = selectedLanguage == language;
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: OutlinedButton(
-        onPressed: () {
-          setState(() {
-            selectedLanguage = language;
-          });
-        },
-        style: OutlinedButton.styleFrom(
-          backgroundColor: isSelected ? Colors.blue.shade900 : Colors.white,
-          side: const BorderSide(color: Colors.grey),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
           ),
         ),
       ),
